@@ -2,28 +2,23 @@ package de.savefeelix.minecraftapi;
 
 import de.savefeelix.minecraftapi.defaults.registry.DefaultPluginRegistry;
 import de.savefeelix.minecraftapi.interfaces.IPluginRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class MinecraftPlugin<TPlugin> extends JavaPlugin {
-    private static JavaPlugin apiInstance;
-    private final IPluginRegistry pluginRegistry;
+public abstract class MinecraftPlugin extends JavaPlugin {
+    private IPluginRegistry pluginRegistry;
+    protected static final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-
-    protected MinecraftPlugin() {
-        this(new DefaultPluginRegistry(apiInstance));
-    }
-
-    protected MinecraftPlugin(IPluginRegistry pluginRegistry) {
+    protected MinecraftPlugin(@Nullable IPluginRegistry pluginRegistry) {
         this.pluginRegistry = pluginRegistry;
     }
 
-    public static JavaPlugin getApiInstance() {
-        return apiInstance;
-    }
 
     @Override
     public void onLoad() {
-        apiInstance = this;
+        pluginRegistry = pluginRegistry != null ? pluginRegistry : new DefaultPluginRegistry(this);
     }
 
     @Override
@@ -39,4 +34,8 @@ public abstract class MinecraftPlugin<TPlugin> extends JavaPlugin {
     public abstract void registerCommands(IPluginRegistry registry);
 
     public abstract void registerListeners(IPluginRegistry pluginRegistry);
+
+    public static ConsoleCommandSender getConsole() {
+        return console;
+    }
 }
