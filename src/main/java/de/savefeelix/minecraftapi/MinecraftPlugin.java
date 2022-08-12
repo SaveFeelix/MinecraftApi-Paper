@@ -11,6 +11,9 @@ public abstract class MinecraftPlugin extends JavaPlugin {
     private IPluginRegistry pluginRegistry;
     protected static final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
+    public MinecraftPlugin() {
+    }
+
     protected MinecraftPlugin(@Nullable IPluginRegistry pluginRegistry) {
         this.pluginRegistry = pluginRegistry;
     }
