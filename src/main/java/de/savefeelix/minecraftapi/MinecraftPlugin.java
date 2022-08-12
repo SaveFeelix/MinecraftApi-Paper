@@ -1,11 +1,14 @@
 package de.savefeelix.minecraftapi;
 
 import de.savefeelix.minecraftapi.defaults.registry.DefaultPluginRegistry;
+import de.savefeelix.minecraftapi.exceptions.RegisterCommandException;
 import de.savefeelix.minecraftapi.interfaces.IPluginRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.logging.Level;
 
 public abstract class MinecraftPlugin extends JavaPlugin {
     private IPluginRegistry pluginRegistry;
@@ -26,7 +29,11 @@ public abstract class MinecraftPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        registerCommands(pluginRegistry);
+        try {
+            registerCommands(pluginRegistry);
+        } catch (RegisterCommandException e) {
+            this.getLogger().log(Level.WARNING, "Cannot load all Commands!");
+        }
         registerListeners(pluginRegistry);
     }
 
@@ -34,7 +41,7 @@ public abstract class MinecraftPlugin extends JavaPlugin {
     public void onDisable() {
     }
 
-    public abstract void registerCommands(IPluginRegistry registry);
+    public abstract void registerCommands(IPluginRegistry registry) throws RegisterCommandException;
 
     public abstract void registerListeners(IPluginRegistry pluginRegistry);
 
