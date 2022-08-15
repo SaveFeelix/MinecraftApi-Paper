@@ -1,12 +1,12 @@
 package de.savefeelix.minecraftapi.interfaces;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Interface to create a timer.
@@ -32,41 +32,16 @@ public interface ITimer {
     /**
      * Method to display the timer to the given player.
      *
-     * @param players Instance of the player
+     * @param commandSender Instance of the player
      */
-    void display(Player players);
+    void display(@NotNull String message, @NotNull CommandSender commandSender);
 
     /**
      * Default method to display the timer to all Player
      */
-    default void broadcast() {
+    default void broadcast(@NotNull String message) {
         for (Player player : Bukkit.getOnlinePlayers())
-            this.display(player);
-    }
-
-    /**
-     * Default method to broadcast the timer to all player which has one of the given permission
-     *
-     * @param permissions the Permissions
-     */
-    default void broadcast(String... permissions) {
-        this.broadcast(Arrays.asList(permissions));
-    }
-
-    /**
-     * Default method to broadcast the timer to all player which has one of the given permission
-     *
-     * @param permissions the Permissions
-     */
-    default void broadcast(Collection<String> permissions) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            for (String permission : permissions) {
-                if (player.hasPermission(permission)) {
-                    this.display(player);
-                    break;
-                }
-            }
-        }
+            this.display(message, player);
     }
 
     /**
@@ -82,12 +57,12 @@ public interface ITimer {
      *
      * @return the time
      */
-    @NotNull Integer getTimeInSeconds();
+    @NotNull CountdownTime getTime();
 
     /**
      * Getter for the TimerId
      *
-     * @return the Id
+     * @return the ID
      */
     @NotNull Integer getTimerId();
 
@@ -144,6 +119,82 @@ public interface ITimer {
          * Set the Timer going down
          */
         Down
+    }
+
+    class CountdownTime {
+        private final long seconds, minutes, hours, days;
+
+        public CountdownTime(long seconds, long minutes, long hours, long days) {
+            this.seconds = seconds;
+            this.minutes = minutes;
+            this.hours = hours;
+            this.days = days;
+        }
+
+        public CountdownTime(long seconds, long minutes, long hours) {
+            this(seconds, minutes, hours, 0);
+        }
+
+        public CountdownTime(long seconds, long minutes) {
+            this(seconds, minutes, 0, 0);
+        }
+
+        public CountdownTime(long seconds) {
+            this(seconds, 0, 0, 0);
+        }
+
+        public long getSeconds() {
+            return seconds;
+        }
+
+        public long getMinutes() {
+            return minutes;
+        }
+
+        public long getHours() {
+            return hours;
+        }
+
+        public long getDays() {
+            return days;
+        }
+
+        public static @NotNull CountdownTime parse(@NotNull Long countdownTime, @NotNull TimeUnit unit) {
+            long seconds = 0, minutes = 0, hours = 0, days = 0;
+            switch (unit) {
+                case SECONDS -> {
+                    seconds = countdownTime;
+                    while (seconds >= 60) {
+                        seconds -= 60;
+                        minutes++;
+                    }
+                    CountdownTime generated = CountdownTime.parse(minutes, TimeUnit.MINUTES);
+                    minutes = generated.getMinutes();
+                    hours = generated.getHours();
+                    days = generated.getDays();
+                }
+                case MINUTES -> {
+                    minutes = countdownTime;
+                    while (minutes >= 60) {
+                        minutes -= 60;
+                        hours++;
+                    }
+                    CountdownTime generated = CountdownTime.parse(hours, TimeUnit.HOURS);
+                    hours = generated.getHours();
+                    days = generated.getDays();
+                }
+                case HOURS -> {
+                    hours = countdownTime;
+                    while (hours >= 24) {
+                        hours -= 24;
+                        days++;
+                    }
+                }
+                default -> throw new IllegalArgumentException("");
+            }
+            return new CountdownTime(seconds, minutes, hours, days);
+        }
+
     }
 
 }

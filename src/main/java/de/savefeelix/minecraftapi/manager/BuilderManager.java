@@ -1,6 +1,10 @@
 package de.savefeelix.minecraftapi.manager;
 
+import de.savefeelix.minecraftapi.builder.ChatTimerBuilder;
 import de.savefeelix.minecraftapi.builder.ItemBuilder;
+import de.savefeelix.minecraftapi.defaults.timer.ChatTimer;
+import de.savefeelix.minecraftapi.interfaces.ITimerAction;
+import de.savefeelix.minecraftapi.interfaces.ITimerEndAction;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -54,5 +58,9 @@ public final class BuilderManager {
      */
     public static @NotNull ItemBuilder createItemBuilder(@NotNull JavaPlugin plugin, @NotNull ItemStack itemStack) {
         return new ItemBuilder(plugin, itemStack);
+    }
+
+    public static @NotNull ChatTimerBuilder createChatTimerBuilder(@NotNull JavaPlugin plugin, @NotNull ITimerAction<ChatTimer> onInterval, @NotNull ITimerEndAction<ChatTimer> onEnd) {
+        return new ChatTimerBuilder(plugin, onInterval, onEnd);
     }
 }
