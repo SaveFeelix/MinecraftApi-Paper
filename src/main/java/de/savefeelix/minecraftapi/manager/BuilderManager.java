@@ -60,6 +60,14 @@ public final class BuilderManager {
         return new ItemBuilder(plugin, itemStack);
     }
 
+    /**
+     * Create an instance of a ChatTimerBuilder
+     *
+     * @param plugin     the Plugin
+     * @param onInterval Action on each Interval
+     * @param onEnd      Action to get the End
+     * @return an instance of the ChatTimerBuilder
+     */
     public static @NotNull ChatTimerBuilder createChatTimerBuilder(@NotNull JavaPlugin plugin, @NotNull ITimerAction<ChatTimer> onInterval, @NotNull ITimerEndAction<ChatTimer> onEnd) {
         return new ChatTimerBuilder(plugin, onInterval, onEnd);
     }

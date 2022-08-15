@@ -7,8 +7,21 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Class to create a ChatTimer
+ */
 public class ChatTimer extends BaseTimer<ChatTimer> {
 
+    /**
+     * Default Constructor
+     * @param plugin the Plugin
+     * @param direction the Timer-Direction
+     * @param onIntervalAction Action on each Interval
+     * @param canEndAction Action to get the End
+     * @param time the Time
+     * @param delay the Delay
+     * @param period the Period
+     */
     public ChatTimer(JavaPlugin plugin, TimerDirection direction, ITimerAction<ChatTimer> onIntervalAction, ITimerEndAction<ChatTimer> canEndAction, Long time, Long delay, Long period) {
         super(plugin, direction, onIntervalAction, canEndAction, time, delay, period);
     }

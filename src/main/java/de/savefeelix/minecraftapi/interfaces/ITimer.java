@@ -32,12 +32,15 @@ public interface ITimer {
     /**
      * Method to display the timer to the given player.
      *
+     * @param message       Message to send
      * @param commandSender Instance of the player
      */
     void display(@NotNull String message, @NotNull CommandSender commandSender);
 
     /**
      * Default method to display the timer to all Player
+     *
+     * @param message Message to send
      */
     default void broadcast(@NotNull String message) {
         for (Player player : Bukkit.getOnlinePlayers())
@@ -121,44 +124,21 @@ public interface ITimer {
         Down
     }
 
-    class CountdownTime {
-        private final long seconds, minutes, hours, days;
-
-        public CountdownTime(long seconds, long minutes, long hours, long days) {
-            this.seconds = seconds;
-            this.minutes = minutes;
-            this.hours = hours;
-            this.days = days;
-        }
-
-        public CountdownTime(long seconds, long minutes, long hours) {
-            this(seconds, minutes, hours, 0);
-        }
-
-        public CountdownTime(long seconds, long minutes) {
-            this(seconds, minutes, 0, 0);
-        }
-
-        public CountdownTime(long seconds) {
-            this(seconds, 0, 0, 0);
-        }
-
-        public long getSeconds() {
-            return seconds;
-        }
-
-        public long getMinutes() {
-            return minutes;
-        }
-
-        public long getHours() {
-            return hours;
-        }
-
-        public long getDays() {
-            return days;
-        }
-
+    /**
+     * Class to create a CountdownTimer
+     *
+     * @param seconds The seconds
+     * @param minutes The Minutes
+     * @param hours   The Hours
+     * @param days    The Days
+     */
+    record CountdownTime(long seconds, long minutes, long hours, long days) {
+        /**
+         * Method to parse the time to a instance of the CountdownTime
+         * @param countdownTime the Time
+         * @param unit the TimeUnit
+         * @return the CountdownTime-Class of the specific time
+         */
         public static @NotNull CountdownTime parse(@NotNull Long countdownTime, @NotNull TimeUnit unit) {
             long seconds = 0, minutes = 0, hours = 0, days = 0;
             switch (unit) {
@@ -169,9 +149,9 @@ public interface ITimer {
                         minutes++;
                     }
                     CountdownTime generated = CountdownTime.parse(minutes, TimeUnit.MINUTES);
-                    minutes = generated.getMinutes();
-                    hours = generated.getHours();
-                    days = generated.getDays();
+                    minutes = generated.minutes();
+                    hours = generated.hours();
+                    days = generated.days();
                 }
                 case MINUTES -> {
                     minutes = countdownTime;
@@ -180,8 +160,8 @@ public interface ITimer {
                         hours++;
                     }
                     CountdownTime generated = CountdownTime.parse(hours, TimeUnit.HOURS);
-                    hours = generated.getHours();
-                    days = generated.getDays();
+                    hours = generated.hours();
+                    days = generated.days();
                 }
                 case HOURS -> {
                     hours = countdownTime;

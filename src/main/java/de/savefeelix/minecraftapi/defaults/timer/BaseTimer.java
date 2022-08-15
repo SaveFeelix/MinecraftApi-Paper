@@ -8,18 +8,69 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class to create a Timer
+ *
+ * @param <TTimer> Generic Type for Actions
+ */
 public abstract class BaseTimer<TTimer extends ITimer> implements ITimer {
 
+    /**
+     * The Plugin
+     */
     protected final JavaPlugin plugin;
-    protected final TimerDirection direction;
-    protected final ITimerAction<TTimer> onIntervalAction;
-    protected final ITimerEndAction<TTimer> canEndAction;
-    protected final Long delay, period;
 
+    /**
+     * The Direction
+     */
+    protected final TimerDirection direction;
+
+    /**
+     * Action which will be executed on each Interval
+     */
+    protected final ITimerAction<TTimer> onIntervalAction;
+
+    /**
+     * Action which will be executed on each Interval. If it's true then the timer will stop!
+     */
+    protected final ITimerEndAction<TTimer> canEndAction;
+
+    /**
+     * The start delay
+     */
+    protected final Long delay;
+
+    /**
+     * The period for each interval
+     */
+    protected final Long period;
+
+    /**
+     * The ID of the Timer
+     */
     protected int countdownId;
+
+    /**
+     * The timer
+     */
     protected Long time;
+
+    /**
+     * The Timer-State
+     */
     protected TimerState state;
 
+    /**
+     * Default Constructor
+     *
+     * @param plugin           the Plugin
+     * @param direction        the Timer-Direction
+     * @param onIntervalAction Action on each Interval
+     * @param canEndAction     Action to get the End
+     * @param time             the Time
+     * @param delay            the Delay
+     * @param period           the Period
+     */
     public BaseTimer(JavaPlugin plugin, TimerDirection direction, ITimerAction<TTimer> onIntervalAction, ITimerEndAction<TTimer> canEndAction, Long time, Long delay, Long period) {
         this.plugin = plugin;
         this.direction = direction;
