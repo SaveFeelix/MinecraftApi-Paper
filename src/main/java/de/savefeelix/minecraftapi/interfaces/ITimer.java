@@ -135,7 +135,14 @@ public interface ITimer {
      * Enum with all directions
      */
     enum TimerDirection {
+        /**
+         * Set the Timer going up
+         */
         Up,
+
+        /**
+         * Set the Timer going down
+         */
         Down
     }
 

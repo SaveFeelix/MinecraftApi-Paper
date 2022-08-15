@@ -15,6 +15,7 @@ public interface IPluginRegistry {
      * Method to register Commands
      *
      * @param command the Command to register
+     * @throws RegisterCommandException trow if the Command isn't registered in the plugin.yml
      * @see CommandInformation
      * @see org.bukkit.command.CommandExecutor
      */
@@ -33,7 +34,7 @@ public interface IPluginRegistry {
      * Default Method to register multiple commands
      *
      * @param commands the commands
-     * @throws RegisterCommandException
+     * @throws RegisterCommandException trow if a Command isn't registered in the plugin.yml
      */
     default void registerCommands(CommandInformation... commands) throws RegisterCommandException {
         for (CommandInformation commandInformation : commands)

@@ -10,6 +10,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Method to create CommandInformation
+ *
+ * @param name      the Name of the Command
+ * @param command   the Command (Executor class)
+ * @param completer the TabCompleter
+ * @param aliases   the aliases (optional)
+ * @see CommandExecutor
+ * @see TabCompleter
+ */
 public record CommandInformation(@NotNull String name, @NotNull CommandExecutor command,
                                  @Nullable TabCompleter completer, String... aliases) {
 

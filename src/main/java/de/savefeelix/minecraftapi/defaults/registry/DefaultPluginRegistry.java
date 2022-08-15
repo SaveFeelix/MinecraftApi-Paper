@@ -10,9 +10,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Default Plugin Registry
+ *
+ * @see IPluginRegistry
+ */
 public class DefaultPluginRegistry implements IPluginRegistry {
+
+    /**
+     * Instance of the Plugin
+     *
+     * @see JavaPlugin
+     */
     private final JavaPlugin plugin;
 
+    /**
+     * Default Constructor
+     *
+     * @param plugin the Plugin
+     */
     public DefaultPluginRegistry(JavaPlugin plugin) {
         this.plugin = plugin;
     }
