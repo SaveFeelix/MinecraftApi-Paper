@@ -38,6 +38,7 @@ public final class ConfigManager {
      */
     public static void set(@NotNull JavaPlugin plugin, @NotNull String path, @NotNull Object object) {
         plugin.getConfig().set(path, object);
+        plugin.saveConfig();
     }
 
     /**
